@@ -73,6 +73,38 @@
       </div>
     </div>
 
+    <button id="previewBtn" class="btn-secondary">
+      👁️ 预览效果
+    </button>
+
+    <div class="preview-modal" id="previewModal" style="display:none;">
+      <div class="preview-overlay" id="previewOverlay"></div>
+      <div class="preview-card">
+        <div class="preview-header">
+          <h3>闲鱼发布预览</h3>
+          <button class="preview-close" id="previewClose">✕</button>
+        </div>
+        <div class="preview-body">
+          <div class="preview-images" id="previewImages"></div>
+          <div class="preview-price-row">
+            <span class="preview-price" id="previewPrice">¥--</span>
+            <span class="preview-original" id="previewOriginal"></span>
+          </div>
+          <h4 class="preview-title" id="previewTitle">商品标题</h4>
+          <div class="preview-tags" id="previewTags"></div>
+          <div class="preview-desc" id="previewDesc">点击"生成文案"后这里会显示完整描述...</div>
+          <div class="preview-user">
+            <span class="preview-avatar">👤</span>
+            <span>个人闲置 · 信用极好</span>
+          </div>
+        </div>
+        <div class="preview-footer">
+          <button class="btn-copy" id="btnBackToEdit">← 返回修改</button>
+          <button class="btn-primary" id="btnGenerateFromPreview">✨ 确认生成文案</button>
+        </div>
+      </div>
+    </div>
+
     <button id="generateBtn" class="btn-primary">
       ✨ 生成文案
     </button>
