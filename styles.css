@@ -256,8 +256,54 @@ footer p {
 }
 
 /* ========================
-   打赏区域
+   二维码区域
    ======================== */
+
+.qrcode-section {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+.qrcode-section h3 {
+  font-size: 15px;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.qrcode-sub {
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 12px;
+}
+
+.qrcode-img {
+  width: 200px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-bottom: 8px;
+}
+
+.qrcode-url {
+  font-size: 12px;
+  color: #666;
+  word-break: break-all;
+  padding: 0 10px;
+}
+
+@media (max-width: 480px) {
+  .qrcode-section {
+    padding: 16px;
+  }
+
+  .qrcode-img {
+    width: 180px;
+  }
+}
 
 .donate-section {
   background: #fff;
