@@ -388,6 +388,7 @@ function generateCopy() {
 
   document.getElementById('resultSection').style.display = 'block';
   document.getElementById('tipsSection').style.display = 'block';
+  document.getElementById('donateSection').style.display = 'block';
 }
 
 // 预览按钮事件
