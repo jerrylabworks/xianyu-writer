@@ -73,8 +73,8 @@
       </div>
     </div>
 
-    <button id="previewBtn" class="btn-secondary">
-      👁️ 预览效果
+    <button id="generateBtn" class="btn-primary">
+      ✨ 生成文案
     </button>
 
     <div class="preview-modal" id="previewModal" style="display:none;">
@@ -99,15 +99,10 @@
           </div>
         </div>
         <div class="preview-footer">
-          <button class="btn-copy" id="btnBackToEdit">← 返回修改</button>
-          <button class="btn-primary" id="btnGenerateFromPreview">✨ 确认生成文案</button>
+          <button class="btn-copy" id="btnBackToEdit">✕ 关闭预览</button>
         </div>
       </div>
     </div>
-
-    <button id="generateBtn" class="btn-primary">
-      ✨ 生成文案
-    </button>
 
     <div class="result-section" id="resultSection" style="display:none;">
       <div class="result-tabs">
@@ -130,6 +125,10 @@
         <div class="tags-display" id="resultTags"></div>
         <button class="btn-copy" data-target="resultTags">📋 复制标签</button>
       </div>
+
+      <button id="previewBtn" class="btn-secondary" style="margin-top:12px;">
+        👁️ 预览发布效果
+      </button>
     </div>
 
     <div class="tips" id="tipsSection" style="display:none;">

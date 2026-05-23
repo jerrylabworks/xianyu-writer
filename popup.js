@@ -247,21 +247,12 @@ function removeImage(idx) {
 }
 
 // ========================
-// 预览功能
+// 预览功能 - 读取已生成的文案
 // ========================
 
 function showPreview() {
-  const name = document.getElementById('productName').value.trim();
-  const category = document.getElementById('category').value;
-  const condition = document.getElementById('condition').value;
-  const originalPrice = parseFloat(document.getElementById('originalPrice').value) || 0;
   const sellPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
-  const details = document.getElementById('details').value.trim();
-
-  if (!name) {
-    alert('请填写商品名称！');
-    return;
-  }
+  const originalPrice = parseFloat(document.getElementById('originalPrice').value) || 0;
 
   // 价格
   document.getElementById('previewPrice').textContent = sellPrice > 0 ? `¥${sellPrice}` : '价格面议';
@@ -271,16 +262,8 @@ function showPreview() {
     document.getElementById('previewOriginal').textContent = '';
   }
 
-  // 标题（用最简单的一个模板）
-  const cond = CONDITION_MAP[condition];
-  const titles = TITLE_TEMPLATES[category] || TITLE_TEMPLATES.other;
-  const titleTemplate = titles[0];
-  const highlight = details ? details.split(/[，。；]/)[0].substring(0, 15) : '个人闲置';
-  const title = titleTemplate
-    .replace('{name}', name)
-    .replace('{condition}', cond.text)
-    .replace('{highlight}', highlight)
-    .replace('{save}', originalPrice > sellPrice ? Math.round(originalPrice - sellPrice) : '不少');
+  // 标题 - 直接用已生成的
+  const title = document.getElementById('resultTitle').value || '商品标题';
   document.getElementById('previewTitle').textContent = title;
 
   // 图片预览
@@ -294,33 +277,22 @@ function showPreview() {
       imgContainer.appendChild(div);
     });
   } else {
-    // 显示5个灰色占位图，代表建议拍摄角度
-    const tips = PHOTO_TIPS[category] || PHOTO_TIPS.other;
+    // 显示5个灰色占位图
     for (let i = 0; i < 5; i++) {
       const div = document.createElement('div');
       div.className = 'preview-img-placeholder';
       div.textContent = '📷';
-      div.title = tips[i] || '建议拍摄';
       imgContainer.appendChild(div);
     }
   }
 
-  // 标签（取前5个）
-  const baseTags = TAGS[category] || TAGS.other;
-  const customTags = name.split(/[\s\-，。；]/).filter(w => w.length >= 2 && w.length <= 6).slice(0, 3);
-  const allTags = [...new Set([...baseTags, ...customTags, cond.text])];
-  const tagsHtml = allTags.slice(0, 5).map(t => `<span class="tag">#${t}</span>`).join('');
+  // 标签 - 直接用已生成的
+  const tagsHtml = document.getElementById('resultTags').innerHTML || '';
   document.getElementById('previewTags').innerHTML = tagsHtml;
 
-  // 描述摘要
-  let descPreview = '';
-  if (uploadedImages.length > 0) {
-    descPreview += `📸 已上传 ${uploadedImages.length} 张实拍图\n`;
-  }
-  descPreview += cond.desc + '\n';
-  if (details) descPreview += `📎 ${details}\n`;
-  descPreview += '\n点击"确认生成文案"获取完整描述、价格和标签。';
-  document.getElementById('previewDesc').textContent = descPreview;
+  // 描述 - 直接用已生成的正文
+  const body = document.getElementById('resultBody').value || '暂无描述';
+  document.getElementById('previewDesc').textContent = body;
 
   document.getElementById('previewModal').style.display = 'flex';
 }
@@ -423,10 +395,6 @@ document.getElementById('previewBtn').addEventListener('click', showPreview);
 document.getElementById('previewClose').addEventListener('click', closePreview);
 document.getElementById('previewOverlay').addEventListener('click', closePreview);
 document.getElementById('btnBackToEdit').addEventListener('click', closePreview);
-document.getElementById('btnGenerateFromPreview').addEventListener('click', () => {
-  closePreview();
-  generateCopy();
-});
 
 // 图片上传
 document.getElementById('uploadArea').addEventListener('click', (e) => {
