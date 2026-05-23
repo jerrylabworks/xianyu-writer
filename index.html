@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>闲鱼文案生成器</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🐟 闲鱼文案生成器</h1>
+      <p class="subtitle">3秒生成爆款标题+正文+标签</p>
+    </header>
+
+    <div class="form-section">
+      <div class="form-group">
+        <label>商品名称 <span class="required">*</span></label>
+        <input type="text" id="productName" placeholder="例如：BBC micro:bit V1 开发板">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>商品类别</label>
+          <select id="category">
+            <option value="digital">数码电子</option>
+            <option value="book">图书教材</option>
+            <option value="clothing">服装鞋包</option>
+            <option value="beauty">美妆护肤</option>
+            <option value="home">家居日用</option>
+            <option value="other">其他</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>新旧程度</label>
+          <select id="condition">
+            <option value="new">全新未拆封</option>
+            <option value="like_new">几乎全新</option>
+            <option value="good">轻微使用痕迹</option>
+            <option value="fair">明显使用痕迹</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>原价（元）</label>
+          <input type="number" id="originalPrice" placeholder="例如：99">
+        </div>
+        <div class="form-group">
+          <label>售价（元）</label>
+          <input type="number" id="sellPrice" placeholder="例如：58">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>补充描述 <span class="hint">（配件、功能亮点等）</span></label>
+        <textarea id="details" rows="3" placeholder="例如：含原装电池盒、说明书；适合少儿编程入门..."></textarea>
+      </div>
+    </div>
+
+    <button id="generateBtn" class="btn-primary">
+      ✨ 生成文案
+    </button>
+
+    <div class="result-section" id="resultSection" style="display:none;">
+      <div class="result-tabs">
+        <button class="tab-btn active" data-tab="title">标题</button>
+        <button class="tab-btn" data-tab="body">正文</button>
+        <button class="tab-btn" data-tab="tags">标签</button>
+      </div>
+
+      <div class="tab-content active" id="tab-title">
+        <textarea id="resultTitle" readonly></textarea>
+        <button class="btn-copy" data-target="resultTitle">📋 复制标题</button>
+      </div>
+
+      <div class="tab-content" id="tab-body">
+        <textarea id="resultBody" readonly rows="8"></textarea>
+        <button class="btn-copy" data-target="resultBody">📋 复制正文</button>
+      </div>
+
+      <div class="tab-content" id="tab-tags">
+        <div class="tags-display" id="resultTags"></div>
+        <button class="btn-copy" data-target="resultTags">📋 复制标签</button>
+      </div>
+    </div>
+
+    <div class="tips" id="tipsSection" style="display:none;">
+      <h3>💡 发布小贴士</h3>
+      <ul>
+        <li>标题前20字最关键，把核心卖点放前面</li>
+        <li>9张图能放满就放满，主图要干净</li>
+        <li>包邮比不包邮曝光量高30%</li>
+        <li>晚上8-10点发布，流量高峰</li>
+      </ul>
+    </div>
+
+    <footer>
+      <p>Made with ❤️ by AI · 仅供个人使用</p>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
