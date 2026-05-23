@@ -355,3 +355,125 @@ footer p {
     font-size: 12px;
   }
 }
+
+/* ========================
+   图片上传区域样式
+   ======================== */
+
+.upload-area {
+  border: 2px dashed #ddd;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #fafafa;
+  position: relative;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-area:hover {
+  border-color: #ff6b35;
+  background: #fff5f2;
+}
+
+.upload-area.has-images {
+  border-style: solid;
+  border-color: #ff6b35;
+  background: #fff;
+  display: block;
+  padding: 12px;
+}
+
+.upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.upload-icon {
+  font-size: 32px;
+}
+
+.upload-text {
+  font-size: 15px;
+  color: #333;
+  font-weight: 500;
+}
+
+.upload-sub {
+  font-size: 12px;
+  color: #999;
+}
+
+.image-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 100%;
+}
+
+.preview-item {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f0f0f0;
+}
+
+.preview-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.remove-btn {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 22px;
+  height: 22px;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 14px;
+  line-height: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-count {
+  text-align: center;
+  font-size: 13px;
+  color: #ff6b35;
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+/* 响应式：图片上传 */
+@media (max-width: 480px) {
+  .upload-area {
+    padding: 14px;
+    min-height: 110px;
+  }
+
+  .upload-icon {
+    font-size: 28px;
+  }
+
+  .upload-text {
+    font-size: 14px;
+  }
+
+  .upload-sub {
+    font-size: 11px;
+  }
+}

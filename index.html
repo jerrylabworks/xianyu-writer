@@ -57,6 +57,20 @@
         <label>补充描述 <span class="hint">（配件、功能亮点等）</span></label>
         <textarea id="details" rows="3" placeholder="例如：USB 3.0接口，读写速度快；原装数据线齐全..."></textarea>
       </div>
+
+      <div class="form-group">
+        <label>📸 商品照片 <span class="hint">（选填，本地上传仅预览）</span></label>
+        <div class="upload-area" id="uploadArea">
+          <input type="file" id="productImages" multiple accept="image/*" style="display:none">
+          <div class="upload-placeholder" id="uploadPlaceholder">
+            <span class="upload-icon">📷</span>
+            <span class="upload-text">点击上传商品照片</span>
+            <span class="upload-sub">建议拍摄：正面、侧面、细节、配件</span>
+          </div>
+          <div class="image-preview-grid" id="imagePreviewGrid"></div>
+        </div>
+        <div class="image-count" id="imageCount" style="display:none">已选 0 张</div>
+      </div>
     </div>
 
     <button id="generateBtn" class="btn-primary">

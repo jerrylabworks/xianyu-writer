@@ -2,6 +2,17 @@
 // 闲鱼文案生成器核心引擎
 // ========================
 
+let uploadedImages = [];
+
+const PHOTO_TIPS = {
+  digital: ['正面整体', '背面/接口', '细节特写', '配件合照', '开机/功能演示'],
+  book: ['封面', '版权页', '内页', '书脊/边角', '笔记页（如有）'],
+  clothing: ['正面平铺', '背面', '细节/标签', '吊牌', '上身效果（可选）'],
+  beauty: ['正面瓶身', '瓶底/保质期', '质地/色号', '包装盒', '使用前后（可选）'],
+  home: ['整体外观', '细节/功能', '尺寸参照', '使用场景', '瑕疵特写（如有）'],
+  other: ['正面', '侧面', '细节', '配件', '瑕疵/磨损（如实拍）']
+};
+
 const TITLE_TEMPLATES = {
   digital: [
     "【{condition}】{name} {highlight}",
@@ -50,6 +61,7 @@ const CONDITION_MAP = {
 
 const BODY_TEMPLATES = {
   digital: `📦 商品状态：{conditionDesc}，如图所示
+{photoDesc}
 ✅ 功能测试：全部功能正常，无暗病
 📎 配件清单：{details}
 💡 适合人群：{targetUser}
@@ -66,6 +78,7 @@ const BODY_TEMPLATES = {
 爽快买家可小刀，屠龙刀勿扰。`,
 
   book: `📚 书籍状态：{conditionDesc}
+{photoDesc}
 ✅ 版本信息：正版图书
 📝 笔记情况：{details}
 
@@ -81,6 +94,7 @@ const BODY_TEMPLATES = {
 学生党可小刀，欢迎私信。`,
 
   clothing: `👕 衣物状态：{conditionDesc}
+{photoDesc}
 📏 尺码信息：{details}
 🎨 颜色/面料：以实拍图为准
 
@@ -96,6 +110,7 @@ const BODY_TEMPLATES = {
 诚心要可小刀，包邮出。`,
 
   beauty: `💄 商品状态：{conditionDesc}
+{photoDesc}
 ✅ 正品保证：{details}
 📅 保质期：新鲜
 
@@ -111,6 +126,7 @@ const BODY_TEMPLATES = {
 买多了出一瓶，爽快包邮。`,
 
   home: `🏠 商品状态：{conditionDesc}
+{photoDesc}
 ✅ 功能完好：无损坏
 📐 尺寸/参数：{details}
 
@@ -126,6 +142,7 @@ const BODY_TEMPLATES = {
 搬家清理，低价出，可小刀。`,
 
   other: `📦 商品状态：{conditionDesc}
+{photoDesc}
 ✅ 来源说明：个人闲置，正品保证
 📎 补充信息：{details}
 
@@ -189,6 +206,46 @@ const REASONS = {
   ]
 };
 
+function renderImagePreview() {
+  const grid = document.getElementById('imagePreviewGrid');
+  const placeholder = document.getElementById('uploadPlaceholder');
+  const uploadArea = document.getElementById('uploadArea');
+  const countEl = document.getElementById('imageCount');
+
+  grid.innerHTML = '';
+
+  if (uploadedImages.length === 0) {
+    placeholder.style.display = 'flex';
+    uploadArea.classList.remove('has-images');
+    countEl.style.display = 'none';
+    return;
+  }
+
+  placeholder.style.display = 'none';
+  uploadArea.classList.add('has-images');
+  countEl.style.display = 'block';
+  countEl.textContent = `已选 ${uploadedImages.length} 张`;
+
+  uploadedImages.forEach((img, idx) => {
+    const div = document.createElement('div');
+    div.className = 'preview-item';
+    div.innerHTML = `<img src="${img.dataUrl}" alt="预览"><button class="remove-btn" data-idx="${idx}">×</button>`;
+    grid.appendChild(div);
+  });
+
+  grid.querySelectorAll('.remove-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      removeImage(parseInt(btn.dataset.idx));
+    });
+  });
+}
+
+function removeImage(idx) {
+  uploadedImages.splice(idx, 1);
+  renderImagePreview();
+}
+
 function generateCopy() {
   const name = document.getElementById('productName').value.trim();
   const category = document.getElementById('category').value;
@@ -235,6 +292,16 @@ function generateCopy() {
   const selectedReasons = reasonsList.sort(() => 0.5 - Math.random()).slice(0, 2);
   const reasonsText = selectedReasons.map(r => `· ${r}`).join('\n');
 
+  // 生成图片说明
+  const photoTips = PHOTO_TIPS[category] || PHOTO_TIPS.other;
+  let photoDesc = '';
+  if (uploadedImages.length > 0) {
+    photoDesc = `📸 实拍图：已上传 ${uploadedImages.length} 张实拍图，多角度展示商品真实状态。所见即所得，放心购买。`;
+  } else {
+    const tipsText = photoTips.slice(0, 3).join('、');
+    photoDesc = `📸 实拍图：建议上传以下角度的照片 — ${tipsText}，让买家更信任。`;
+  }
+
   // 生成正文
   const targetUser = category === 'digital' ? '学生、创客、编程爱好者' :
                      category === 'book' ? '备考学生、自学者' :
@@ -245,6 +312,7 @@ function generateCopy() {
   const bodyTemplate = BODY_TEMPLATES[category] || BODY_TEMPLATES.other;
   const body = bodyTemplate
     .replace('{conditionDesc}', cond.desc)
+    .replace('{photoDesc}', photoDesc)
     .replace('{details}', details || '详见描述')
     .replace('{targetUser}', targetUser)
     .replace('{reasons}', reasonsText)
@@ -266,6 +334,26 @@ function generateCopy() {
   document.getElementById('resultSection').style.display = 'block';
   document.getElementById('tipsSection').style.display = 'block';
 }
+
+// 图片上传
+document.getElementById('uploadArea').addEventListener('click', (e) => {
+  if (e.target.closest('.remove-btn')) return;
+  document.getElementById('productImages').click();
+});
+
+document.getElementById('productImages').addEventListener('change', (e) => {
+  const files = Array.from(e.target.files);
+  files.forEach(file => {
+    if (!file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      uploadedImages.push({ name: file.name, dataUrl: ev.target.result });
+      renderImagePreview();
+    };
+    reader.readAsDataURL(file);
+  });
+  e.target.value = '';
+});
 
 // Tab切换
 document.querySelectorAll('.tab-btn').forEach(btn => {
